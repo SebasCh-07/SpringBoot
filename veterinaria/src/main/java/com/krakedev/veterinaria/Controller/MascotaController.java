@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krakedev.veterinaria.Service.MascotaService;
+import com.krakedev.veterinaria.entity.EstadoMascota;
 import com.krakedev.veterinaria.entity.Mascota;
 
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,7 @@ public class MascotaController {
             mascotaActualizada.setEdad(mascota.getEdad());
             mascotaActualizada.setFechaRegistro(mascota.getFechaRegistro());
             mascotaActualizada.setNombreDueno(mascota.getNombreDueno());
+            mascotaActualizada.setEstado(mascota.getEstado());
             
             Mascota mascotaBDD = mascotaService.actualizarMascota(id, mascotaActualizada);
             return ResponseEntity.ok(mascotaBDD);
@@ -80,5 +82,23 @@ public class MascotaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<Mascota>> ListarPorEstado (@PathVariable EstadoMascota estado) {
+        List<Mascota> mascotas = mascotaService.obtenerPorEstado(estado);
+        return ResponseEntity.ok(mascotas);
+    }
+
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<?> cambiarEstadoMascota (@PathVariable long id, @RequestBody EstadoMascota nuevoEstado) {
+        try {
+            Mascota mascota = mascotaService.cambiarEstado(id, nuevoEstado);
+            return ResponseEntity.ok(mascota);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    
 
 }

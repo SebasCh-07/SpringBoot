@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.krakedev.veterinaria.Repository.MascotaRepository;
 import com.krakedev.veterinaria.Service.MascotaService;
+import com.krakedev.veterinaria.entity.EstadoMascota;
 import com.krakedev.veterinaria.entity.Mascota;
 
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,19 @@ public class MascotaServiceImpl implements MascotaService {
         mascotaRepository.findById(id)
                 .orElseThrow(() -> new Exception("Mascota no encontrado"));
         mascotaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Mascota> obtenerPorEstado(EstadoMascota estado) {
+        return mascotaRepository.findByEstado(estado);
+    }
+
+    @Override
+    public Mascota cambiarEstado(Long id, EstadoMascota estado) {
+        Mascota mascotaExistente = mascotaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mascota no encontrado"));
+        mascotaExistente.setEstado(estado);
+        return mascotaRepository.save(mascotaExistente);
     }
 
 }

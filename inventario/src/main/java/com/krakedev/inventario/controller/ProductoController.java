@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.krakedev.inventario.entity.EstadoProducto;
 import com.krakedev.inventario.entity.Producto;
 import com.krakedev.inventario.service.ProductoService;
 
@@ -77,5 +78,21 @@ public class ProductoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @PutMapping("/estado/{idP}")
+    public ResponseEntity<?> cambiarEstadoProducto (@PathVariable long idP, @RequestBody EstadoProducto nuevoEstado) {
+        try {
+            Producto producto = productoService.cambiarEstadoProducto(idP, nuevoEstado);
+            return ResponseEntity.ok(producto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/estado/{estadoProducto}")
+    public ResponseEntity<List<Producto>> LsitarPorEstadoProducto (@PathVariable EstadoProducto estadoProducto) {
+        List<Producto> productos = productoService.obtenerPorEstadoProducto(estadoProducto);
+        return ResponseEntity.ok(productos);
     }
 }
