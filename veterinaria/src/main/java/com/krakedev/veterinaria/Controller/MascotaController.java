@@ -13,10 +13,13 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RequestMapping("/api/mascotas")
 @RestController
@@ -49,6 +52,33 @@ public class MascotaController {
        Optional<Mascota> mascota = mascotaService.BuscarPorId(id);
        return mascota.isPresent() ? ResponseEntity.ok(mascota.get()) 
                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Mascota no encontrada");
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> actualizarMascota (@PathVariable long id, @RequestBody Mascota mascota) {
+        try {
+            Mascota mascotaActualizada = new Mascota();
+            mascotaActualizada.setNombre(mascota.getNombre());
+            mascotaActualizada.setEspecie(mascota.getEspecie());;
+            mascotaActualizada.setEdad(mascota.getEdad());
+            mascotaActualizada.setFechaRegistro(mascota.getFechaRegistro());
+            mascotaActualizada.setNombreDueno(mascota.getNombreDueno());
+            
+            Mascota mascotaBDD = mascotaService.actualizarMascota(id, mascotaActualizada);
+            return ResponseEntity.ok(mascotaBDD);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarMascota (@PathVariable long id) {
+        try {
+            mascotaService.eliminarMascota(id);
+            return ResponseEntity.ok("Mascota eliminada correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }

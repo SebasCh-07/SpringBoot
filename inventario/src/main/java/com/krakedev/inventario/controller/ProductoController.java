@@ -1,6 +1,5 @@
 package com.krakedev.inventario.controller;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,10 +14,10 @@ import com.krakedev.inventario.service.ProductoService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-
 
 @RestController
 @RequestMapping("/api/productos")
@@ -41,15 +40,42 @@ public class ProductoController {
     @GetMapping("/buscar/nombre/{nombre}")
     public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         Optional<Producto> producto = productoService.BuscarPorNombre(nombre);
-        return producto.isPresent() ? ResponseEntity.ok(producto.get()) 
+        return producto.isPresent() ? ResponseEntity.ok(producto.get())
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
-           
+
     }
 
     @GetMapping("/buscar/id/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         Optional<Producto> producto = productoService.BuscarPorId(id);
-        return producto.isPresent() ? ResponseEntity.ok(producto.get()) 
+        return producto.isPresent() ? ResponseEntity.ok(producto.get())
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+    }
+
+    @PutMapping("/actualizar/{idP}")
+    public ResponseEntity<?> actualizarProducto (@PathVariable long idP, @RequestBody Producto producto) {
+        try {
+            Producto productoActualizado = new Producto();
+            productoActualizado.setNombreP(producto.getNombreP());
+            productoActualizado.setCantidadP(producto.getCantidadP());
+            productoActualizado.setDescripcionP(producto.getDescripcionP());
+            productoActualizado.setPrecioP(producto.getPrecioP());
+            productoActualizado.setEstadoP(producto.getEstadoP());
+            
+            Producto productoBDD = productoService.actualizarProducto(idP, productoActualizado);
+            return ResponseEntity.ok(productoBDD);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/eliminar/{idP}")
+    public ResponseEntity<?> eliminarProducto (@PathVariable long idP) {
+        try {
+            productoService.eliminarProducto(idP);
+            return ResponseEntity.ok("Producto eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
