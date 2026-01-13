@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 
-@RestController
-@RequestMapping("/api/messages")
+//@RestController
+//@RequestMapping("/api/messages")
 public class MessageController {
     
     private List<Message> mensajes = new ArrayList<>();

@@ -8,9 +8,9 @@ import com.krakedev.veterinaria.entity.Mascota;
 public interface MascotaService {
     Mascota registrarMascota(Mascota mascota);
     List<Mascota> listarMascotas();
-    Optional<Mascota> BuscarPorId(Long idMascota);
-    Optional<Mascota> BuscarPorNombre(String nombreMascota);
-    Mascota actualizarMascota(Long idMascota, Mascota mascota);
-    void eliminarMascota(Long idMascota);
+    Optional<Mascota> BuscarPorId(Long id);
+    Optional<Mascota> BuscarPorNombre(String nombre);
+    Mascota actualizarMascota(Long id, Mascota mascota);
+    void eliminarMascota(Long id);
 
 }

@@ -17,7 +17,7 @@ import lombok.SneakyThrows;
 @RequiredArgsConstructor
 public class ProductoServiceImpl implements ProductoService {
 
-    private ProductoRepository productoRepository;
+    private final ProductoRepository productoRepository;
 
     @Override
     public Producto registrarProducto(Producto producto) {
@@ -31,18 +31,18 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Optional<Producto> BuscarPorId(Long idProducto) {
-        return productoRepository.findByIdProducto(idProducto);
+        return productoRepository.findByIdP(idProducto);
     }
 
     @Override
     public Optional<Producto> BuscarPorNombre(String nombreProducto) {
-        return productoRepository.findByNombreProducto(nombreProducto);
+        return productoRepository.findByNombreP(nombreProducto);
     }
 
     @Override
     @SneakyThrows
-    public Producto actualizarProducto(Long idProducto, Producto producto) {
-        Producto productoEcistente = productoRepository.findByIdProducto(idProducto)
+    public Producto actualizarProducto(Long idP, Producto producto) {
+        Producto productoEcistente = productoRepository.findByIdP(idP)
                 .orElseThrow(() -> new Exception("Producto no encontrado"));
 
         productoEcistente.setNombreP(producto.getNombreP());
@@ -57,17 +57,17 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     @SneakyThrows
-    public void eliminarProducto(Long idProducto) {
-        productoRepository.findByIdProducto(idProducto)
+    public void eliminarProducto(Long idP) {
+        productoRepository.findByIdP(idP)
                 .orElseThrow(() -> new Exception("Producto no encontrado"));
 
-        productoRepository.deleteById(idProducto);
+        productoRepository.deleteById(idP);
     }
 
     @Override
     @SneakyThrows
-    public Producto cambiarEstadoProducto(Long idProducto, EstadoProducto nuevoEstado) {
-        Producto productoEcistente = productoRepository.findByIdProducto(idProducto)
+    public Producto cambiarEstadoProducto(Long idP, EstadoProducto nuevoEstado) {
+        Producto productoEcistente = productoRepository.findByIdP(idP)
                 .orElseThrow(() -> new Exception("Producto no encontrado"));
 
         productoEcistente.setEstadoP(nuevoEstado);;
@@ -77,8 +77,8 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public List<Producto> obtenerPorEstadoProducto(EstadoProducto estadoProducto) {
-        return productoRepository.findByEstadoProducto(estadoProducto);
+    public List<Producto> obtenerPorEstadoProducto(EstadoProducto estadoP) {
+        return productoRepository.findByEstadoP(estadoP);
     }
 
 }

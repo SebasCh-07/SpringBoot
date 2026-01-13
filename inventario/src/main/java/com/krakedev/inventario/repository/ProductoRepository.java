@@ -12,8 +12,8 @@ import com.krakedev.inventario.entity.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    Optional<Producto> findByIdProducto(Long idProducto);
-    Optional<Producto> findByNombreProducto(String nombreProducto);
-    List<Producto> findByEstadoProducto(EstadoProducto estadoProducto);
+    Optional<Producto> findByIdP(Long idP);
+    Optional<Producto> findByNombreP(String nombreP);
+    List<Producto> findByEstadoP(EstadoProducto estadoP);
 
 }

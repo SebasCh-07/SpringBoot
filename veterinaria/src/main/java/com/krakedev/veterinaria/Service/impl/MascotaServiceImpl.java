@@ -16,7 +16,7 @@ import lombok.SneakyThrows;
 @RequiredArgsConstructor
 public class MascotaServiceImpl implements MascotaService {
 
-    private MascotaRepository mascotaRepository;
+    private final MascotaRepository mascotaRepository;
 
     @Override
     public Mascota registrarMascota(Mascota mascota) {
@@ -29,19 +29,19 @@ public class MascotaServiceImpl implements MascotaService {
     }
 
     @Override
-    public Optional<Mascota> BuscarPorId(Long idMascota) {
-        return mascotaRepository.findById(idMascota);
+    public Optional<Mascota> BuscarPorId(Long id) {
+        return mascotaRepository.findById(id);
     }
 
     @Override
-    public Optional<Mascota> BuscarPorNombre(String nombreMascota) {
-        return mascotaRepository.findByNombreMascota(nombreMascota);
+    public Optional<Mascota> BuscarPorNombre(String nombre) {
+        return mascotaRepository.findByNombre(nombre);
     }
 
     @Override
     @SneakyThrows
-    public Mascota actualizarMascota(Long idMascota, Mascota mascota) {
-        Mascota mascotaExistente = mascotaRepository.findById(idMascota)
+    public Mascota actualizarMascota(Long id, Mascota mascota) {
+        Mascota mascotaExistente = mascotaRepository.findById(id)
                 .orElseThrow(() -> new Exception("Mascota no encontrado"));
         mascotaExistente.setNombre(mascota.getNombre());
         mascotaExistente.setEdad(mascota.getEdad());
@@ -51,10 +51,10 @@ public class MascotaServiceImpl implements MascotaService {
 
     @Override
     @SneakyThrows
-    public void eliminarMascota(Long idMascota) {
-        mascotaRepository.findById(idMascota)
+    public void eliminarMascota(Long id) {
+        mascotaRepository.findById(id)
                 .orElseThrow(() -> new Exception("Mascota no encontrado"));
-        mascotaRepository.deleteById(idMascota);
+        mascotaRepository.deleteById(id);
     }
 
 }
